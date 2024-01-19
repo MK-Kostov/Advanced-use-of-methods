@@ -35,14 +35,14 @@
 
 //delegate void Print(string input);
 
-var numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
-var countryToCurrencyMapping = new Dictionary<string, string>
-{
-	["USA"] = "USD",
-	["India"] = "INR",
-	["Spain"] = "EUR",
+//var numbers = new List<int> { 1, 2, 3, 4, 5, 6 };
+//var countryToCurrencyMapping = new Dictionary<string, string>
+//{
+//	["USA"] = "USD",
+//	["India"] = "INR",
+//	["Spain"] = "EUR",
 
-};
+//};
 
 //var countryToCurrencyMapping = new Dictionary<string, string>
 //{
@@ -59,15 +59,15 @@ var countryToCurrencyMapping = new Dictionary<string, string>
 
 //Console.WriteLine("Currency is Spain is " + countryToCurrencyMapping["Spain"]);
 
-countryToCurrencyMapping["Poland"] = "PLN";
-countryToCurrencyMapping["Poland"] = "EUR";
+//countryToCurrencyMapping["Poland"] = "PLN";
+//countryToCurrencyMapping["Poland"] = "EUR";
 
-foreach (var countryCurrencyPair in countryToCurrencyMapping)
-{
-	Console.WriteLine(
-		$"Country: {countryCurrencyPair.Key}, " +
-		$"currency: {countryCurrencyPair.Value}");
-}
+//foreach (var countryCurrencyPair in countryToCurrencyMapping)
+//{
+//	Console.WriteLine(
+//		$"Country: {countryCurrencyPair.Key}, " +
+//		$"currency: {countryCurrencyPair.Value}");
+//}
 
 //Console.WriteLine("Currency is Poland is " + countryToCurrencyMapping["Poland"]);
 
@@ -77,4 +77,67 @@ foreach (var countryCurrencyPair in countryToCurrencyMapping)
 //	Console.WriteLine("Currency is Italy is " + countryToCurrencyMapping["Italy"]);
 //}
 
+//Console.ReadKey();
+
+using System.Collections.Generic;
+
+var employees = new List<Employee>
+{
+	new Employee("Jake Smith", "Space Navigation", 25000),
+	new Employee("Anna Blake", "Space Navigation", 29000),
+	new Employee("Barbara Oak", "Xenobiology", 21500),
+	new Employee("Jake Smith", "Xenobiology", 22000),
+	new Employee("Damien Parker", "Machanics", 21000),
+	new Employee("Gustavo Sanchez", "Machanics", 20000),
+};
+
+var result = CalculateAverageSalaryPerDepartment(employees);
+
 Console.ReadKey();
+
+Dictionary<string, decimal> CalculateAverageSalaryPerDepartment(IEnumerable<Employee> employees)
+{
+	var employeesPerDepartments = new Dictionary<string, List<Employee>>();
+
+	foreach (var employee in employees)
+	{
+		if (!employeesPerDepartments.ContainsKey(employee.Department))
+		{
+			employeesPerDepartments[employee.Department] = new List<Employee>();
+		}
+
+		employeesPerDepartments[employee.Department].Add(employee);
+	}
+
+	var result = new Dictionary<string, decimal>();
+
+	foreach (var employeesPerDeparment in employeesPerDepartments)
+	{
+		decimal sumOfSalaries = 0;
+
+		foreach (var employee in employeesPerDeparment.Value)
+		{
+			sumOfSalaries += employee.MonthlySalary;
+		}
+
+		var average = sumOfSalaries / employeesPerDeparment.Value.Count;
+
+		result[employeesPerDeparment.Key] = average;
+	}
+
+	return result;
+}
+
+public class Employee
+{
+	public Employee(string name, string department, decimal monthlySalary)
+	{
+		Name = name;
+		Department = department;
+		MonthlySalary = monthlySalary;
+	}
+
+	public string Name { get; init; }
+	public string Department { get; init; }
+	public decimal MonthlySalary { get; init; }
+}
