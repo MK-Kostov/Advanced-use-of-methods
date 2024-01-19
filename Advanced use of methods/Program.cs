@@ -79,65 +79,152 @@
 
 //Console.ReadKey();
 
-using System.Collections.Generic;
+//using System.Collections.Generic;
 
-var employees = new List<Employee>
-{
-	new Employee("Jake Smith", "Space Navigation", 25000),
-	new Employee("Anna Blake", "Space Navigation", 29000),
-	new Employee("Barbara Oak", "Xenobiology", 21500),
-	new Employee("Jake Smith", "Xenobiology", 22000),
-	new Employee("Damien Parker", "Machanics", 21000),
-	new Employee("Gustavo Sanchez", "Machanics", 20000),
-};
+//var employees = new List<Employee>
+//{
+//	new Employee("Jake Smith", "Space Navigation", 25000),
+//	new Employee("Anna Blake", "Space Navigation", 29000),
+//	new Employee("Barbara Oak", "Xenobiology", 21500),
+//	new Employee("Jake Smith", "Xenobiology", 22000),
+//	new Employee("Damien Parker", "Machanics", 21000),
+//	new Employee("Gustavo Sanchez", "Machanics", 20000),
+//};
 
-var result = CalculateAverageSalaryPerDepartment(employees);
+//var result = CalculateAverageSalaryPerDepartment(employees);
+
+//Console.ReadKey();
+
+//Dictionary<string, decimal> CalculateAverageSalaryPerDepartment(IEnumerable<Employee> employees)
+//{
+//	var employeesPerDepartments = new Dictionary<string, List<Employee>>();
+
+//	foreach (var employee in employees)
+//	{
+//		if (!employeesPerDepartments.ContainsKey(employee.Department))
+//		{
+//			employeesPerDepartments[employee.Department] = new List<Employee>();
+//		}
+
+//		employeesPerDepartments[employee.Department].Add(employee);
+//	}
+
+//	var result = new Dictionary<string, decimal>();
+
+//	foreach (var employeesPerDeparment in employeesPerDepartments)
+//	{
+//		decimal sumOfSalaries = 0;
+
+//		foreach (var employee in employeesPerDeparment.Value)
+//		{
+//			sumOfSalaries += employee.MonthlySalary;
+//		}
+
+//		var average = sumOfSalaries / employeesPerDeparment.Value.Count;
+
+//		result[employeesPerDeparment.Key] = average;
+//	}
+
+//	return result;
+//}
+
+//public class Employee
+//{
+//	public Employee(string name, string department, decimal monthlySalary)
+//	{
+//		Name = name;
+//		Department = department;
+//		MonthlySalary = monthlySalary;
+//	}
+
+//	public string Name { get; init; }
+//	public string Department { get; init; }
+//	public decimal MonthlySalary { get; init; }
+//}
+
+var numbers = new List<int> { 10, 12, -100, 55, 17, 22 };
+
+Console.WriteLine(@"Select filter:
+Even
+Odd
+Positive");
+
+var userInput = Console.ReadLine();
+
+List<int> result = new NumbersFilter().FilterBy(userInput, numbers);
+
+Print(result);
 
 Console.ReadKey();
 
-Dictionary<string, decimal> CalculateAverageSalaryPerDepartment(IEnumerable<Employee> employees)
+void Print(IEnumerable<int> numbers)
 {
-	var employeesPerDepartments = new Dictionary<string, List<Employee>>();
-
-	foreach (var employee in employees)
-	{
-		if (!employeesPerDepartments.ContainsKey(employee.Department))
-		{
-			employeesPerDepartments[employee.Department] = new List<Employee>();
-		}
-
-		employeesPerDepartments[employee.Department].Add(employee);
-	}
-
-	var result = new Dictionary<string, decimal>();
-
-	foreach (var employeesPerDeparment in employeesPerDepartments)
-	{
-		decimal sumOfSalaries = 0;
-
-		foreach (var employee in employeesPerDeparment.Value)
-		{
-			sumOfSalaries += employee.MonthlySalary;
-		}
-
-		var average = sumOfSalaries / employeesPerDeparment.Value.Count;
-
-		result[employeesPerDeparment.Key] = average;
-	}
-
-	return result;
+	Console.WriteLine(string.Join(", ", numbers));
 }
 
-public class Employee
+public class NumbersFilter
 {
-	public Employee(string name, string department, decimal monthlySalary)
+	public List<int> FilterBy(string filteringType, List<int> numbers)
 	{
-		Name = name;
-		Department = department;
-		MonthlySalary = monthlySalary;
+		switch (filteringType)
+		{
+			case "Even":
+				return SelectEven(numbers);
+			case "Odd":
+				return SelectOdd(numbers);
+			case "Positive":
+				return SelectPositive(numbers);
+			default:
+				throw new NotSupportedException($"{filteringType} is not a valid filter");
+
+		}
 	}
 
-	public string Name { get; init; }
-	public string Department { get; init; }
-	public decimal MonthlySalary { get; init; }
+	private List<int> SelectEven(List<int> numbers)
+	{
+		var result = new List<int>();
+
+		foreach (var number in numbers)
+		{
+			if (number % 2 == 0)
+			{
+				result.Add(number);
+			}
+		}
+
+		return result;
+	}
+
+	private List<int> SelectOdd(List<int> numbers)
+	{
+		var result = new List<int>();
+
+		foreach (var number in numbers)
+		{
+			if (number % 2 == 1)
+			{
+				result.Add(number);
+			}
+		}
+
+		return result;
+	}
+
+	private List<int> SelectPositive(List<int> numbers)
+	{
+		var result = new List<int>();
+
+		foreach (var number in numbers)
+		{
+			if (number > 0)
+			{
+				result.Add(number);
+			}
+		}
+
+		return result;
+	}
 }
+
+
+
